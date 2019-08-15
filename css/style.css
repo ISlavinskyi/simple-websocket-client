@@ -6,7 +6,6 @@ body {
     color: #000;
     background-color: #eee;
     font-size: 10pt;
-    display: flex;
 }
 
 fieldset {
@@ -31,22 +30,35 @@ label {
     font-weight: bold;
 }
 
-#wrapper{
-    display:flex;
-    justify-content:space-between;
+#wrapper {
+    display: flex;
+    /*justify-content: space-between;*/
 }
 
 #content {
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 1 50%;
+}
+
+#showLimit {
+    flex: 1;
 }
 
 .server_row {
     margin-bottom: 4px;
     display: flex;
+    justify-content: space-between;
+    line-height: 23px;
 }
 
 .filter_row {
     margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    line-height: 23px;
 }
 
 .toggle_milliseconds_row {
@@ -54,39 +66,48 @@ label {
 }
 
 #urlHistory, #favorites {
-    width: 500px;
+    flex: 1;
     padding: 1px 3px;
     border: 1px solid #999;
 }
 
+.path {
+    display: flex;
+    justify-content: flex-start;
+}
+
 #serverSchema {
-    width: 50px;
+    max-width: 50px;
     padding: 1px 3px;
     border: 1px solid #999;
 }
+
 #serverHost {
-    width: 200px;
+    max-width: 200px;
     padding: 1px 3px;
     border: 1px solid #999;
 }
+
 #serverPort {
-    width: 50px;
+    max-width: 50px;
     padding: 1px 3px;
     border: 1px solid #999;
 }
+
 #serverPath {
-    width: 300px;
+    max-width: 50px;
     padding: 1px 3px;
     border: 1px solid #999;
 }
+
 #serverParams {
-    width: 300px;
+    max-width: 50px;
     padding: 1px 3px;
     border: 1px solid #999;
 }
 
 #filterMessage {
-    width: 700px;
+    flex: 1;
     padding: 1px 3px;
     border: 1px solid #999;
 }
@@ -106,12 +127,11 @@ label {
     padding: 0 3px;
     resize: vertical;
     line-height: 150%;
-    width: calc(100vw - 54px);
 }
 
 #parsed {
     padding: 10px;
-    width: calc(30vw - 54px);
+    flex: 0 1 50%;
 }
 
 #parsedMessage {
@@ -129,7 +149,6 @@ label {
     border: 1px dotted #777;
     background-color: #fff;
     line-height: 150%;
-    width: calc(70vw - 54px);
 }
 
 #messages pre {
@@ -141,4 +160,25 @@ label {
 
 #messages pre.sent {
     color: #f63;
+}
+
+.button {
+    margin-left: 10px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+#sendButton {
+    width: 75px;
+    margin-top: 5px;
+}
+
+#requestArea, #messageArea {
+    flex: 1;
+}
+
+.CodeMirror {
+    height: 100%;
 }

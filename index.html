@@ -1,94 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-        <title>Simple WebSocket Client</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css"/>
-        <link rel="stylesheet" href="css/codemirror.css">
-        <link rel="stylesheet" href="addon/fold/foldgutter.css" />
-        <script src="lib/codemirror.js"></script>
-        <script src="lib/beautify.js"></script>
-        <script src="addon/closebrackets.js"></script>
-        <script src="mode/javascript.js"></script>
-        <script src="addon/fold/foldcode.js"></script>
-        <script src="addon/fold/foldgutter.js"></script>
-        <script src="addon/fold/brace-fold.js"></script>
-        <script src="addon/fold/indent-fold.js"></script>
-        <script src="addon/fold/comment-fold.js"></script>
-    </head>
-    <body>
-        <script src="lib/jquery.slim.min.js"></script>
-        <script src="index.js"></script>
-        <div id="wrapper">
-            <div id="content">
-                <fieldset>
-                    <legend>Server Location</legend>
-                    <div class="server_row">
-                        <label>URL history: </label>
-                        <select id="urlHistory"></select>
-                        <button id="delButton">Del</button>
-                    </div>
-                    <div class="server_row">
-                        <label>Favorites: </label>
-                        <select id="favorites"></select>
-                        <button id="favApplyButton">Apply</button>
-                        <button id="favDelButton">Del</button>
-                    </div>
-                    <div class="server_row">
-                        <label>URL:</label>
-                        <input type="text" id="serverSchema" value="ws"/>&nbsp;&#58;&#47;&#47;
-                        <input type="text" id="serverHost" value="localhost"/>&nbsp;&#58;
-                        <input type="text" id="serverPort" value="80"/>&nbsp;&#47;
-                        <input type="text" id="serverPath" value=""/>&nbsp;&#63;
-                        <input type="text" id="serverParams" value=""/>
-                    </div>
-                    <div class="server_row">
-                        <label>Binary type:</label>
-                        <select id="binaryType">
-                            <option value="">-</option>
-                            <option value="arraybuffer">arraybuffer</option>
-                        </select>
-                        <button id="connectButton">Open</button>
-                        <button id="disconnectButton">Close</button>
-                        <button id="favAddButton">Add to favorites</button>
-                    </div>
-                    <div class="server_row">
-                        <label>Status: </label>
-                        <span id="connectionStatus">CLOSED</span>
-                    </div>
-                </fieldset>
+<head>
+    <meta charset="utf-8"/>
+    <title>Simple WebSocket Client</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" href="css/codemirror.css">
+    <link rel="stylesheet" href="addon/fold/foldgutter.css"/>
+    <script src="lib/codemirror.js"></script>
+    <script src="lib/beautify.js"></script>
+    <script src="addon/closebrackets.js"></script>
+    <script src="mode/javascript.js"></script>
+    <script src="addon/fold/foldcode.js"></script>
+    <script src="addon/fold/foldgutter.js"></script>
+    <script src="addon/fold/brace-fold.js"></script>
+    <script src="addon/fold/indent-fold.js"></script>
+    <script src="addon/fold/comment-fold.js"></script>
+</head>
+<body>
+<script src="lib/jquery.slim.min.js"></script>
+<script src="index.js"></script>
+<div id="wrapper">
+    <div id="content">
+        <fieldset id="server">
+            <legend>Server Location</legend>
+            <div class="server_row">
+                <label>URL history: </label>
+                <select id="urlHistory"></select>
+                <button id="delButton" class="button">Del</button>
+            </div>
+            <div class="server_row">
+                <label>Favorites: </label>
+                <select id="favorites"></select>
+                <button id="favApplyButton" class="button">Apply</button>
+                <button id="favDelButton" class="button">Del</button>
+            </div>
+            <div class="server_row path">
+                <label>URL:</label>
+                <input type="text" id="serverSchema" value="ws"/>&nbsp;&#58;&#47;&#47;
+                <input type="text" id="serverHost" value="localhost"/>&nbsp;&#58;
+                <input type="text" id="serverPort" value="80"/>&nbsp;&#47;
+                <input type="text" id="serverPath" value=""/>&nbsp;&#63;
+                <input type="text" id="serverParams" value=""/>
+            </div>
+            <div class="server_row path">
+                <label>Binary type:</label>
+                <select id="binaryType">
+                    <option value="">-</option>
+                    <option value="arraybuffer">arraybuffer</option>
+                </select>
+                <button id="connectButton" class="button">Open</button>
+                <button id="disconnectButton" class="button">Close</button>
+                <button id="favAddButton" class="button">Add to favorites</button>
+            </div>
+            <div class="server_row path">
+                <label>Status: </label>
+                <span id="connectionStatus">CLOSED</span>
+            </div>
+        </fieldset>
+
+        <fieldset id="requestArea">
+            <legend>Request</legend>
+            <div>
                 <div class="filter_row">
                     <label>Filter:&nbsp;</label><input type="text" id="filterMessage">
                 </div>
                 <div class="filter_row">
-                    <label>Show last&nbsp;</label><input type="text" id="showLimit"><label>&nbsp; messages (default: 1000)</label>
+                    <label>Show last&nbsp;</label><input type="text" id="showLimit"><label>&nbsp; messages (default:
+                    1000)</label>
                 </div>
-                <fieldset id="requestArea">
-                    <legend>Request</legend>
-                    <div>
-                        <textarea id="editor"></textarea>
-                    </div>
-                    <div>
-                        <button id="sendButton" disabled="disabled">Send</button>
-                        [Shortcut] Ctr + Enter
-                    </div>
-                </fieldset>
+            </div>
+            <div>
+                <textarea id="editor"></textarea>
+            </div>
+            <div>
+                <button id="sendButton" disabled="disabled">Send</button>
+                [Shortcut] Ctr + Enter
+            </div>
+        </fieldset>
+
+        <fieldset id="messageArea">
+            <legend>Message Log
+                <button id="clearMessage">Clear</button>
                 <div class="toggle_milliseconds_row">
                     <label>Show message timestamp milliseconds:&nbsp;<input type="checkbox" id="msToTimestamp"></label>
                 </div>
-                <fieldset id="messageArea">
-                    <legend>Message Log <button id="clearMessage">Clear</button></legend>
-                    <div id="messages"></div>
-                </fieldset>
+            </legend>
+            <div id="messages"></div>
+        </fieldset>
+    </div>
+    <div id="parsed">
+        <fieldset id="parsedArea">
+            <legend> Parsed Message
+                <button id="parsedToRequest">Copy</button>
+            </legend>
+            <div>
+                <textarea id="parsedMessage"></textarea>
             </div>
-            <div id="parsed">
-                <fieldset id="parsedArea">
-                    <legend> Parsed Message <button id="parsedToRequest">Copy</button></legend>
-                    <div>
-                        <textarea id="parsedMessage"></textarea>
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-    </body>
+        </fieldset>
+    </div>
+</div>
+</body>
 </html>
